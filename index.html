@@ -38,8 +38,8 @@
 
         .form-group label {
             width: 100px;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: normal; /* Không in đậm */
         }
 
         .form-group input,
@@ -48,7 +48,7 @@
             padding: 4px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .form-group input[type="date"] {
@@ -66,9 +66,8 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            font-weight: normal;
-            font-size: 12px;
-            width: 100%;
+            font-size: 13px;
+            font-weight: normal; /* Không in đậm */
         }
 
         .checkbox-group label span {
@@ -78,8 +77,8 @@
 
         .underline {
             text-decoration: underline;
-            font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: normal;
             width: 100px;
         }
 
@@ -108,10 +107,52 @@
         /* Thông báo lỗi */
         .error-message {
             color: red;
-            font-size: 12px;
+            font-size: 13px;
             text-align: center;
             display: none;
             margin-bottom: 8px;
+        }
+
+        /* Popup thông báo */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 280px;
+        }
+
+        .popup h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .popup p {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #ffcc00;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .popup button:hover {
+            background: #e6b800;
         }
     </style>
 </head>
@@ -171,6 +212,13 @@
     </form>
 </div>
 
+<!-- Popup thông báo -->
+<div class="popup" id="popup">
+    <h3>Bạn đã đăng ký thành công</h3>
+    <p>Quản lý sẽ liên hệ bạn trong thời gian sớm nhất. Xin cảm ơn!</p>
+    <button onclick="closePopup()">OK</button>
+</div>
+
 <script>
     function toggleKhac(select) {
         var khacInput = document.getElementById("khac");
@@ -182,20 +230,26 @@
     }
 
     document.getElementById("registerForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
         var name = document.getElementById("name").value.trim();
         var dob = document.getElementById("dob").value.trim();
         var phone = document.getElementById("phone").value.trim();
         var address = document.getElementById("address").value.trim();
         var work = document.getElementById("work").value;
         var checkboxes = document.querySelectorAll('input[name="ca"]:checked');
-        
+
         if (name === "" || dob === "" || phone === "" || address === "" || work === "" || checkboxes.length === 0) {
-            event.preventDefault();
             document.getElementById("error-message").style.display = "block";
         } else {
             document.getElementById("error-message").style.display = "none";
+            document.getElementById("popup").style.display = "block";
         }
     });
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
 </script>
 
 </body>

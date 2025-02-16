@@ -169,4 +169,22 @@
         }
     }
 
-    document
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
+        var name = document.getElementById("name").value.trim();
+        var dob = document.getElementById("dob").value.trim();
+        var phone = document.getElementById("phone").value.trim();
+        var address = document.getElementById("address").value.trim();
+        var work = document.getElementById("work").value;
+        var checkboxes = document.querySelectorAll('input[name="ca"]:checked');
+        
+        if (name === "" || dob === "" || phone === "" || address === "" || work === "" || checkboxes.length === 0) {
+            event.preventDefault();
+            document.getElementById("error-message").style.display = "block";
+        } else {
+            document.getElementById("error-message").style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>

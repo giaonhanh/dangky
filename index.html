@@ -39,7 +39,7 @@
         .form-group label {
             width: 100px;
             font-size: 13px;
-            font-weight: normal; /* Không in đậm */
+            font-weight: normal;
         }
 
         .form-group input,
@@ -49,6 +49,11 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 13px;
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+            font-style: italic;
         }
 
         .form-group input[type="date"] {
@@ -67,7 +72,7 @@
             align-items: center;
             gap: 5px;
             font-size: 13px;
-            font-weight: normal; /* Không in đậm */
+            font-weight: normal;
         }
 
         .checkbox-group label span {
@@ -75,14 +80,13 @@
             min-width: 180px;
         }
 
-        .underline {
-            text-decoration: underline;
+        .form-title {
             font-size: 13px;
             font-weight: normal;
             width: 100px;
         }
 
-        /* Dropdown cho "Đã từng làm ở đâu?" */
+        /* Dropdown cho "Đã làm ở đâu?" */
         #khac {
             display: none;
             margin-top: 8px;
@@ -166,26 +170,26 @@
 
         <div class="form-group">
             <label for="name">Họ & Tên:</label>
-            <input type="text" id="name" required>
+            <input type="text" id="name" placeholder="Nhập họ & tên">
         </div>
 
         <div class="form-group">
             <label for="dob">Ngày sinh:</label>
-            <input type="date" id="dob" required>
+            <input type="date" id="dob">
         </div>
 
         <div class="form-group">
             <label for="phone">SĐT:</label>
-            <input type="tel" id="phone" required>
+            <input type="tel" id="phone" placeholder="Nhập số điện thoại">
         </div>
 
         <div class="form-group">
             <label for="address">Nơi ở:</label>
-            <input type="text" id="address" required>
+            <input type="text" id="address" placeholder="Nhập nơi ở">
         </div>
 
         <div class="form-group">
-            <span class="underline">Ca làm việc:</span>
+            <span class="form-title">Ca làm việc:</span>
             <div class="checkbox-group">
                 <label><input type="checkbox" name="ca" value="ca1"><span>Ca 1 (06h30 - 13h30)</span></label>
                 <label><input type="checkbox" name="ca" value="ca2"><span>Ca 2 (12h30 - 18h30)</span></label>
@@ -194,8 +198,8 @@
         </div>
 
         <div class="form-group">
-            <label for="work">Làm ở:</label>
-            <select id="work" required onchange="toggleKhac(this)">
+            <label for="work">Đã làm ở:</label>
+            <select id="work" onchange="toggleKhac(this)">
                 <option value="">Chọn...</option>
                 <option value="shopee">Shopee Food</option>
                 <option value="grab">Grab</option>
@@ -205,7 +209,7 @@
 
         <div class="form-group" id="khac">
             <label for="otherWork">Nơi khác:</label>
-            <input type="text" id="otherWork">
+            <input type="text" id="otherWork" placeholder="Nhập nơi khác">
         </div>
 
         <button type="submit" class="submit-btn">Đăng Ký</button>
@@ -222,29 +226,25 @@
 <script>
     function toggleKhac(select) {
         var khacInput = document.getElementById("khac");
-        if (select.value === "khac") {
-            khacInput.style.display = "block";
-        } else {
-            khacInput.style.display = "none";
-        }
+        khacInput.style.display = select.value === "khac" ? "block" : "none";
     }
 
     document.getElementById("registerForm").addEventListener("submit", function(event) {
         event.preventDefault();
 
-        var name = document.getElementById("name").value.trim();
-        var dob = document.getElementById("dob").value.trim();
-        var phone = document.getElementById("phone").value.trim();
-        var address = document.getElementById("address").value.trim();
-        var work = document.getElementById("work").value;
-        var checkboxes = document.querySelectorAll('input[name="ca"]:checked');
+        var inputs = document.querySelectorAll("#registerForm input, #registerForm select");
+        var errorMessage = document.getElementById("error-message");
 
-        if (name === "" || dob === "" || phone === "" || address === "" || work === "" || checkboxes.length === 0) {
-            document.getElementById("error-message").style.display = "block";
-        } else {
-            document.getElementById("error-message").style.display = "none";
-            document.getElementById("popup").style.display = "block";
+        for (let input of inputs) {
+            if (input.type !== "checkbox" && input.value.trim() === "") {
+                errorMessage.style.display = "block";
+                return;
+            }
         }
+
+        errorMessage.style.display = "none";
+        document.getElementById("popup").style.display = "block";
+        this.reset();
     });
 
     function closePopup() {

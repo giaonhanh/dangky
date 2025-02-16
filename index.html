@@ -54,8 +54,9 @@
         /* Chọn ca làm việc */
         .checkbox-group {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
         }
 
         .checkbox-group label {
@@ -81,16 +82,17 @@
         .submit-btn {
             width: 100%;
             padding: 10px;
-            background: #28a745;
-            color: white;
+            background: #ffcc00; /* Màu vàng */
+            color: black;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
         }
 
         .submit-btn:hover {
-            background: #218838;
+            background: #e6b800;
         }
 
         /* Thông báo lỗi */

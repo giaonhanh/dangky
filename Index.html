@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Công Việc</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .checkbox-group {
+            text-align: left;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Đăng Ký Công Việc</h2>
+        <form id="registrationForm">
+            <!-- Họ và Tên -->
+            <label for="fullName">Họ và Tên:</label>
+            <input type="text" id="fullName" required>
+
+            <!-- Ngày tháng năm sinh -->
+            <label for="dob">Ngày tháng năm sinh:</label>
+            <input type="date" id="dob" required>
+
+            <!-- Số điện thoại -->
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" required>
+
+            <!-- Nơi ở hiện nay -->
+            <label for="address">Nơi ở hiện nay:</label>
+            <input type="text" id="address" required>
+
+            <!-- Chọn Ca Làm Việc -->
+            <label>Chọn ca làm việc:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" id="ca1" value="Ca 1"> <label for="ca1">Ca 1 (06h30 - 13h30)</label><br>
+                <input type="checkbox" id="ca2" value="Ca 2"> <label for="ca2">Ca 2 (12h30 - 18h30)</label><br>
+                <input type="checkbox" id="ca3" value="Ca 3"> <label for="ca3">Ca 3 (16h30 - 23h00)</label>
+            </div>
+
+            <!-- Đã từng làm ở đâu? -->
+            <label for="experience">Đã từng làm ở đâu?</label>
+            <select id="experience" onchange="toggleOtherInput()" required>
+                <option value="">-- Chọn --</option>
+                <option value="Shopee Food">Shopee Food</option>
+                <option value="Grab">Grab</option>
+                <option value="Khác">Khác</option>
+            </select>
+
+            <!-- Ô nhập khi chọn "Khác" -->
+            <input type="text" id="otherExperience" class="hidden" placeholder="Nhập nơi đã làm">
+
+            <!-- Nút Đăng Ký -->
+            <button type="submit">Đăng Ký</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleOtherInput() {
+            var experienceSelect = document.getElementById("experience");
+            var otherInput = document.getElementById("otherExperience");
+            if (experienceSelect.value === "Khác") {
+                otherInput.classList.remove("hidden");
+                otherInput.required = true;
+            } else {
+                otherInput.classList.add("hidden");
+                otherInput.required = false;
+            }
+        }
+
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Ngăn chặn gửi form mặc định
+            
+            var fullName = document.getElementById("fullName").value.trim();
+            var dob = document.getElementById("dob").value.trim();
+            var phone = document.getElementById("phone").value.trim();
+            var address = document.getElementById("address").value.trim();
+            var experience = document.getElementById("experience").value;
+            var otherExperience = document.getElementById("otherExperience").value.trim();
+
+            // Kiểm tra có chọn ít nhất một ca làm việc không
+            var selectedShifts = [];
+            if (document.getElementById("ca1").checked) selectedShifts.push("Ca 1");
+            if (document.getElementById("ca2").checked) selectedShifts.push("Ca 2");
+            if (document.getElementById("ca3").checked) selectedShifts.push("Ca 3");
+
+            if (selectedShifts.length === 0) {
+                alert("Vui lòng chọn ít nhất một ca làm việc.");
+                return;
+            }
+
+            // Kiểm tra nếu chọn "Khác" nhưng không nhập thông tin
+            if (experience === "Khác" && otherExperience === "") {
+                alert("Vui lòng nhập nơi bạn đã từng làm.");
+                return;
+            }
+
+            // Hiển thị dữ liệu nhập (thay vì gửi đi)
+            alert(`
+                Họ và Tên: ${fullName}
+                Ngày sinh: ${dob}
+                Số điện thoại: ${phone}
+                Nơi ở: ${address}
+                Ca làm việc: ${selectedShifts.join(", ")}
+                Đã từng làm ở: ${experience === "Khác" ? otherExperience : experience}
+            `);
+        });
+    </script>
+
+</body>
+</html>

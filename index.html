@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Đăng Ký</title>
+    <title>Đăng ký tài xế</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: yellow; /* Nền vàng */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.8); /* Form trong suốt */
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             width: 400px;
         }
 
         h2 {
             text-align: center;
+            color: #333;
         }
 
         .form-group {
@@ -52,9 +54,8 @@
         /* Chọn ca làm việc */
         .checkbox-group {
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-direction: column;
+            gap: 5px;
         }
 
         .checkbox-group label {
@@ -91,14 +92,25 @@
         .submit-btn:hover {
             background: #218838;
         }
+
+        /* Thông báo lỗi */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Form Đăng Ký</h2>
+    <h2>Đăng ký tài xế</h2>
     
-    <form>
+    <form id="registerForm">
+        <div class="error-message" id="error-message">Vui lòng nhập đầy đủ thông tin. Xin cảm ơn!</div>
+
         <div class="form-group">
             <label for="name">Họ và Tên:</label>
             <input type="text" id="name" required>
@@ -156,7 +168,5 @@
             khacInput.style.display = "none";
         }
     }
-</script>
 
-</body>
-</html>
+    document

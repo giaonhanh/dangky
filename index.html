@@ -30,7 +30,7 @@
             align-items: center;
             justify-content: space-between;
             margin-top: 10px;
-            text-align: left;  /* Căn lề trái */
+            text-align: left;
         }
         label {
             font-size: 14px;
@@ -45,14 +45,14 @@
             font-size: 14px;
         }
         .checkbox-group {
-            margin-right: 3cm;  /* Dời checkbox-group sang trái 2cm */
+            margin-right: 2cm;
         }
         .checkbox-group div {
             display: flex;
             align-items: center;
             justify-content: flex-start;
             gap: 10px;
-            margin-bottom: 10px;  /* Thêm khoảng cách giữa các checkbox */
+            margin-bottom: 10px;
         }
         .checkbox-group input {
             margin: 0;
@@ -121,12 +121,44 @@
     <script>
         document.getElementById("registrationForm").addEventListener("submit", function(event) {
             event.preventDefault();
+            let name = document.getElementById("name").value;
+            let dob = document.getElementById("dob").value;
+            let phone = document.getElementById("phone").value;
+            let address = document.getElementById("address").value;
             let workplace = document.getElementById("workplace").value;
+            
+            // Lấy ca làm việc đã chọn
+            let shifts = [];
+            document.querySelectorAll('input[name="shift"]:checked').forEach(function(checkbox) {
+                shifts.push(checkbox.value);
+            });
+
             if (workplace === "") {
                 alert("Vui lòng chọn nơi đã làm!");
                 return;
             }
-            alert("Đăng ký thành công!");
+
+            // Gửi dữ liệu tới Google Apps Script
+            fetch('https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: name,
+                    dob: dob,
+                    phone: phone,
+                    address: address,
+                    shift: shifts.join(', '),
+                    workplace: workplace
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);  // Thông báo thành công
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi khi đăng ký!');
+            });
         });
     </script>
 </body>

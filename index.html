@@ -144,6 +144,17 @@
         document.getElementById("registrationForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
+            // Kiểm tra các trường bắt buộc có đầy đủ thông tin không
+            var requiredFields = ['hoten', 'ngaysinh', 'sodienthoai', 'noio', 'dalam'];
+            for (var i = 0; i < requiredFields.length; i++) {
+                var field = document.getElementById(requiredFields[i]);
+                if (field.value.trim() === "") {
+                    document.getElementById("errorMessage").innerHTML = "Vui lòng nhập đầy đủ thông tin.";
+                    document.getElementById("errorMessage").style.display = "block";
+                    return;
+                }
+            }
+
             // Kiểm tra số điện thoại
             var phone = document.getElementById("sodienthoai").value;
             var phonePattern = /^\d{10}$/; // Kiểm tra số điện thoại phải đủ 10 ký tự số
@@ -160,17 +171,23 @@
                 return;
             }
 
-            // Hiển thị thông báo thành công
-            document.getElementById("errorMessage").style.display = "none";
-            document.getElementById("successMessage").style.display = "block";
-
-            var formData = new FormData(event.target);
-
-            // Tạo đối tượng FormData để lấy dữ liệu từ các checkbox ca làm việc
+            // Kiểm tra ít nhất một checkbox được chọn
             var shifts = [];
             document.querySelectorAll('input[name="calamviec"]:checked').forEach(function(checkbox) {
                 shifts.push(checkbox.value);
             });
+            if (shifts.length === 0) {
+                document.getElementById("errorMessage").innerHTML = "Vui lòng chọn ít nhất một ca làm việc.";
+                document.getElementById("errorMessage").style.display = "block";
+                return;
+            }
+
+            // Hiển thị thông báo thành công
+            document.getElementById("errorMessage").style.display = "none";
+            document.getElementById("successMessage").style.display = "block";
+
+            // Tạo đối tượng FormData để lấy dữ liệu từ form
+            var formData = new FormData(event.target);
 
             // Thêm ca làm việc vào FormData
             formData.append("calamviec", shifts.join(", "));

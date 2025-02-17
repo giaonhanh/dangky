@@ -21,8 +21,8 @@
             text-align: left;
         }
         label {
-            display: block;
             font-size: 14px;
+            display: block;
             margin-top: 10px;
         }
         input, select {
@@ -35,13 +35,7 @@
         .checkbox-group {
             display: flex;
             flex-direction: column;
-        }
-        .checkbox-group label {
-            display: flex;
-            align-items: center;
-        }
-        .checkbox-group input {
-            margin-right: 5px;
+            gap: 5px;
         }
         button {
             background-color: #f8ff0b;
@@ -95,6 +89,7 @@
     </div>
 
     <script>
+        // Khi chọn "Khác", hiện ô nhập liệu
         document.getElementById("dalam").addEventListener("change", function() {
             var khacField = document.getElementById("khac");
             if (this.value === "Khác") {
@@ -106,6 +101,7 @@
             }
         });
 
+        // Gửi dữ liệu lên Google Sheets
         document.getElementById("dangkyForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
@@ -119,7 +115,7 @@
                 }
             });
 
-            fetch("https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec", {
+            fetch("YOUR_GOOGLE_SCRIPT_URL", {
                 method: "POST",
                 mode: "no-cors",
                 body: new URLSearchParams(object)

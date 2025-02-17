@@ -144,6 +144,10 @@
         document.getElementById("registrationForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
+            // Ẩn thông báo lỗi nếu có
+            document.getElementById("errorMessage").style.display = "none";
+            document.getElementById("successMessage").style.display = "none";
+
             // Kiểm tra các trường bắt buộc có đầy đủ thông tin không
             var requiredFields = ['hoten', 'ngaysinh', 'sodienthoai', 'noio', 'dalam'];
             for (var i = 0; i < requiredFields.length; i++) {
@@ -183,13 +187,12 @@
             }
 
             // Hiển thị thông báo thành công
-            document.getElementById("errorMessage").style.display = "none";
             document.getElementById("successMessage").style.display = "block";
 
             // Tạo đối tượng FormData để lấy dữ liệu từ form
             var formData = new FormData(event.target);
 
-            // Thêm ca làm việc vào FormData
+            // Thêm ca làm việc vào FormData (dùng dấu phẩy để nối các giá trị checkbox đã chọn)
             formData.append("calamviec", shifts.join(", "));
             
             // Kiểm tra trường "Khác" và lấy thông tin thêm nếu có

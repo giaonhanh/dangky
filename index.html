@@ -76,6 +76,19 @@
             cursor: pointer;
             margin-top: 15px;
         }
+        .additional-info {
+            display: none;
+            margin-top: 10px;
+        }
+        .message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -115,12 +128,41 @@
                     <option value="Khác">Khác</option>
                 </select>
             </div>
+            <div class="form-group additional-info" id="additionalInfo">
+                <label for="otherInfo">Thông tin khác:</label>
+                <input type="text" id="otherInfo" name="otherInfo" placeholder="Nhập thông tin khác">
+            </div>
             <button type="submit" class="btn-submit">Đăng Ký</button>
+            <div class="message" id="successMessage" style="display:none;">
+                Bạn đã đăng ký thành công.<br>Quản lý của Giao Nhanh sẽ liên hệ lại bạn trong thời gian sớm nhất.
+            </div>
+            <div class="error" id="errorMessage" style="display:none;"></div>
         </form>
     </div>
+
     <script>
         document.getElementById("registrationForm").addEventListener("submit", function(event) {
             event.preventDefault();
+
+            // Kiểm tra số điện thoại
+            var phone = document.getElementById("sodienthoai").value;
+            var phonePattern = /^\d{10}$/; // Kiểm tra số điện thoại phải đủ 10 ký tự số
+            if (!phone.match(phonePattern)) {
+                document.getElementById("errorMessage").innerHTML = "Sai số điện thoại. Vui lòng nhập lại.";
+                document.getElementById("errorMessage").style.display = "block";
+                return;
+            }
+
+            // Kiểm tra chọn nơi đã làm
+            var workplace = document.getElementById("dalam").value;
+            if (workplace === "") {
+                alert("Vui lòng chọn nơi đã làm!");
+                return;
+            }
+
+            // Hiển thị thông báo thành công
+            document.getElementById("errorMessage").style.display = "none";
+            document.getElementById("successMessage").style.display = "block";
 
             var formData = new FormData(event.target);
 
@@ -132,26 +174,36 @@
 
             // Thêm ca làm việc vào FormData
             formData.append("calamviec", shifts.join(", "));
-
-            // Lấy các dữ liệu từ form
-            var data = new URLSearchParams();
-            formData.forEach((value, key) => {
-                data.append(key, value);
-            });
+            
+            // Kiểm tra trường "Khác" và lấy thông tin thêm nếu có
+            if (workplace === "Khác") {
+                var otherInfo = document.getElementById("otherInfo").value;
+                formData.append("otherInfo", otherInfo);
+            }
 
             // Gửi form dữ liệu tới Apps Script
             fetch('https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec', {
                 method: 'POST',
-                body: data
+                body: new URLSearchParams([...formData])
             })
             .then(response => response.text())
             .then(result => {
-                alert(result); // Thông báo thành công
+                console.log(result); // In ra kết quả từ Apps Script (nếu có)
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Đã xảy ra lỗi khi đăng ký!');
             });
+        });
+
+        // Hiển thị ô nhập thông tin khi chọn "Khác"
+        document.getElementById("dalam").addEventListener("change", function() {
+            var workplace = this.value;
+            if (workplace === "Khác") {
+                document.getElementById("additionalInfo").style.display = "block";
+            } else {
+                document.getElementById("additionalInfo").style.display = "none";
+            }
         });
     </script>
 </body>

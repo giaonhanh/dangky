@@ -30,7 +30,6 @@
             align-items: center;
             justify-content: space-between;
             margin-top: 10px;
-            text-align: left;
         }
         label {
             font-size: 14px;
@@ -45,14 +44,16 @@
             font-size: 14px;
         }
         .checkbox-group {
-            margin-right: 2cm;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 5px;
         }
         .checkbox-group div {
             display: flex;
             align-items: center;
             justify-content: flex-start;
             gap: 10px;
-            margin-bottom: 10px;
         }
         .checkbox-group input {
             margin: 0;
@@ -76,25 +77,18 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        .additional-info {
-            display: none;
-            margin-top: 10px;
-        }
-        .message {
-            color: green;
-            font-weight: bold;
-            text-align: center;
-        }
-        .error {
+        .error-message {
             color: red;
+            font-size: 12px;
             text-align: center;
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>ĐĂNG KÝ TÀI XẾ GIAO NHANH</h2>
-        <form id="registrationForm">
+        <form id="registrationForm" action="https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec" method="POST">
             <div class="form-group">
                 <label for="hoten">Họ & Tên:</label>
                 <input type="text" id="hoten" name="hoten" placeholder="Nhập họ & tên" required>
@@ -106,6 +100,7 @@
             <div class="form-group">
                 <label for="sodienthoai">SĐT:</label>
                 <input type="text" id="sodienthoai" name="sodienthoai" placeholder="Nhập số điện thoại" required>
+                <div id="phoneError" class="error-message">Sai số điện thoại. Vui lòng nhập lại.</div>
             </div>
             <div class="form-group">
                 <label for="noio">Nơi ở:</label>
@@ -114,9 +109,9 @@
             <div class="form-group">
                 <label>Ca làm việc:</label>
                 <div class="checkbox-group">
-                    <div><input type="checkbox" name="calamviec" value="Ca 1"><label>Ca 1 (06h30 - 13h30)</label></div>
-                    <div><input type="checkbox" name="calamviec" value="Ca 2"><label>Ca 2 (12h30 - 18h30)</label></div>
-                    <div><input type="checkbox" name="calamviec" value="Ca 3"><label>Ca 3 (16h30 - 23h00)</label></div>
+                    <div><input type="checkbox" name="calamviec" value="Ca 1"> Ca 1 (06h30 - 13h30)</div>
+                    <div><input type="checkbox" name="calamviec1" value="Ca 2"> Ca 2 (12h30 - 18h30)</div>
+                    <div><input type="checkbox" name="calamviec2" value="Ca 3"> Ca 3 (16h30 - 23h00)</div>
                 </div>
             </div>
             <div class="form-group">
@@ -128,102 +123,56 @@
                     <option value="Khác">Khác</option>
                 </select>
             </div>
-            <div class="form-group additional-info" id="additionalInfo">
-                <label for="otherInfo">Thông tin khác:</label>
-                <input type="text" id="otherInfo" name="otherInfo" placeholder="Nhập thông tin khác">
+            <div class="form-group" id="khacContainer" style="display:none;">
+                <label for="vieckhac">Thông tin khác:</label>
+                <input type="text" id="vieckhac" name="vieckhac" placeholder="Vui lòng nhập thông tin khác">
             </div>
             <button type="submit" class="btn-submit">Đăng Ký</button>
-            <div class="message" id="successMessage" style="display:none;">
-                Bạn đã đăng ký thành công.<br>Quản lý của Giao Nhanh sẽ liên hệ lại bạn trong thời gian sớm nhất.
-            </div>
-            <div class="error" id="errorMessage" style="display:none;"></div>
         </form>
+        <div id="successMessage" class="error-message" style="color:green;">Bạn đã đăng ký thành công.<br>Quản lý của Giao Nhanh sẽ liên hệ lại bạn trong thời gian sớm nhất.</div>
     </div>
 
     <script>
-        document.getElementById("registrationForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        document.getElementById('dalam').addEventListener('change', function() {
+            var selectedValue = this.value;
+            var khacContainer = document.getElementById('khacContainer');
+            
+            // Hiển thị trường "Thông tin khác" nếu chọn "Khác"
+            if (selectedValue === 'Khác') {
+                khacContainer.style.display = 'block';
+            } else {
+                khacContainer.style.display = 'none';
+            }
+        });
 
-            // Ẩn thông báo lỗi nếu có
-            document.getElementById("errorMessage").style.display = "none";
-            document.getElementById("successMessage").style.display = "none";
-
-            // Kiểm tra các trường bắt buộc có đầy đủ thông tin không
-            var requiredFields = ['hoten', 'ngaysinh', 'sodienthoai', 'noio', 'dalam'];
-            for (var i = 0; i < requiredFields.length; i++) {
-                var field = document.getElementById(requiredFields[i]);
-                if (field.value.trim() === "") {
-                    document.getElementById("errorMessage").innerHTML = "Vui lòng nhập đầy đủ thông tin.";
-                    document.getElementById("errorMessage").style.display = "block";
-                    return;
-                }
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            // Kiểm tra các trường bắt buộc
+            var hoten = document.getElementById('hoten').value;
+            var ngaysinh = document.getElementById('ngaysinh').value;
+            var sodienthoai = document.getElementById('sodienthoai').value;
+            var noio = document.getElementById('noio').value;
+            var dalam = document.getElementById('dalam').value;
+            var calamviec = document.querySelector('input[name="calamviec"]:checked') ||
+                            document.querySelector('input[name="calamviec1"]:checked') ||
+                            document.querySelector('input[name="calamviec2"]:checked');
+            
+            if (!hoten || !ngaysinh || !sodienthoai || !noio || !dalam || !calamviec) {
+                alert("Vui lòng nhập đầy đủ thông tin.");
+                event.preventDefault(); // Ngừng gửi form
+                return;
             }
 
             // Kiểm tra số điện thoại
-            var phone = document.getElementById("sodienthoai").value;
-            var phonePattern = /^\d{10}$/; // Kiểm tra số điện thoại phải đủ 10 ký tự số
-            if (!phone.match(phonePattern)) {
-                document.getElementById("errorMessage").innerHTML = "Sai số điện thoại. Vui lòng nhập lại.";
-                document.getElementById("errorMessage").style.display = "block";
+            if (sodienthoai.length !== 10 || isNaN(sodienthoai)) {
+                document.getElementById('phoneError').style.display = 'block';
+                event.preventDefault(); // Ngừng gửi form
                 return;
-            }
-
-            // Kiểm tra chọn nơi đã làm
-            var workplace = document.getElementById("dalam").value;
-            if (workplace === "") {
-                alert("Vui lòng chọn nơi đã làm!");
-                return;
-            }
-
-            // Kiểm tra ít nhất một checkbox được chọn
-            var shifts = [];
-            document.querySelectorAll('input[name="calamviec"]:checked').forEach(function(checkbox) {
-                shifts.push(checkbox.value);
-            });
-            if (shifts.length === 0) {
-                document.getElementById("errorMessage").innerHTML = "Vui lòng chọn ít nhất một ca làm việc.";
-                document.getElementById("errorMessage").style.display = "block";
-                return;
-            }
-
-            // Hiển thị thông báo thành công
-            document.getElementById("successMessage").style.display = "block";
-
-            // Tạo đối tượng FormData để lấy dữ liệu từ form
-            var formData = new FormData(event.target);
-
-            // Thêm ca làm việc vào FormData (dùng dấu phẩy để nối các giá trị checkbox đã chọn)
-            formData.append("calamviec", shifts.join(", "));
-            
-            // Kiểm tra trường "Khác" và lấy thông tin thêm nếu có
-            if (workplace === "Khác") {
-                var otherInfo = document.getElementById("otherInfo").value;
-                formData.append("otherInfo", otherInfo);
-            }
-
-            // Gửi form dữ liệu tới Apps Script
-            fetch('https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec', {
-                method: 'POST',
-                body: new URLSearchParams([...formData])
-            })
-            .then(response => response.text())
-            .then(result => {
-                console.log(result); // In ra kết quả từ Apps Script (nếu có)
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Đã xảy ra lỗi khi đăng ký!');
-            });
-        });
-
-        // Hiển thị ô nhập thông tin khi chọn "Khác"
-        document.getElementById("dalam").addEventListener("change", function() {
-            var workplace = this.value;
-            if (workplace === "Khác") {
-                document.getElementById("additionalInfo").style.display = "block";
             } else {
-                document.getElementById("additionalInfo").style.display = "none";
+                document.getElementById('phoneError').style.display = 'none';
             }
+
+            // Hiển thị thông báo thành công sau khi gửi form
+            document.getElementById('successMessage').style.display = 'block';
         });
     </script>
 </body>

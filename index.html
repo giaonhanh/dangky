@@ -52,15 +52,19 @@
         .checkbox-group div {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 10px;
         }
         .checkbox-group input {
             margin: 0;
+            width: 16px;
+            height: 16px;
         }
         .checkbox-group label {
             font-size: 14px;
             font-weight: normal;
-            width: auto;
+            flex-grow: 1;
+            white-space: nowrap;
         }
         .btn-submit {
             width: 100%;

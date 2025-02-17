@@ -3,133 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ĐĂNG KÝ TÀI XẾ GIAO NHANH</title>
+    <title>Đăng Ký Tài Xế</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
             background-color: yellow;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            background: rgba(255, 255, 255, 0.8);
+            background-color: #fff8c6;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            display: inline-block;
-            text-align: left;
-            width: 350px;
+            width: 400px;
         }
-        label {
-            display: block;
-            font-size: 14px;
+        h2 {
+            text-align: center;
+            font-weight: bold;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-top: 10px;
         }
+        label {
+            font-size: 14px;
+            width: 30%;
+            font-weight: normal;
+        }
         input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
+            width: 65%;
+            padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 14px;
         }
         .checkbox-group {
             display: flex;
             flex-direction: column;
+            gap: 5px;
+            margin-top: 5px;
         }
-        .checkbox-group label {
+        .checkbox-group div {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
         .checkbox-group input {
-            margin-right: 10px;
+            margin: 0;
         }
-        button {
-            background-color: #FFD700;
+        .checkbox-group label {
+            font-size: 14px;
+            font-weight: normal;
+            width: auto;
+        }
+        .btn-submit {
+            width: 100%;
+            background-color: gold;
             border: none;
             padding: 10px;
             font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
             cursor: pointer;
             margin-top: 15px;
-            width: 100%;
-            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>ĐĂNG KÝ TÀI XẾ GIAO NHANH</h1>
     <div class="container">
-        <form id="dangkyForm">
-            <label for="hoten">Họ & Tên:</label>
-            <input type="text" id="hoten" name="hoten" placeholder="Nhập họ & tên" required>
-            
-            <label for="ngaysinh">Ngày sinh:</label>
-            <input type="date" id="ngaysinh" name="ngaysinh" required>
-            
-            <label for="sodienthoai">SĐT:</label>
-            <input type="tel" id="sodienthoai" name="sodienthoai" placeholder="Nhập số điện thoại" required>
-            
-            <label for="noio">Nơi ở:</label>
-            <input type="text" id="noio" name="noio" placeholder="Nhập nơi ở" required>
-            
-            <label>Ca làm việc:</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" name="calamviec" value="Ca 1"> Ca 1 (06h30 - 13h30)</label>
-                <label><input type="checkbox" name="calamviec" value="Ca 2"> Ca 2 (12h30 - 18h30)</label>
-                <label><input type="checkbox" name="calamviec" value="Ca 3"> Ca 3 (16h30 - 23h00)</label>
+        <h2>ĐĂNG KÝ TÀI XẾ GIAO NHANH</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Họ & Tên:</label>
+                <input type="text" id="name" placeholder="Nhập họ & tên" required>
             </div>
-            
-            <label for="dalam">Đã làm ở:</label>
-            <select id="dalam" name="dalam" required>
-                <option value="" disabled selected>Chọn nơi đã làm</option>
-                <option value="Shopee Food">Shopee Food</option>
-                <option value="Grab">Grab</option>
-                <option value="Khác">Khác</option>
-            </select>
-            
-            <input type="text" id="khac" name="khac" placeholder="Nhập nơi khác" style="display: none;">
-            
-            <button type="submit">Đăng Ký</button>
+            <div class="form-group">
+                <label for="dob">Ngày sinh:</label>
+                <input type="date" id="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">SĐT:</label>
+                <input type="text" id="phone" placeholder="Nhập số điện thoại" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Nơi ở:</label>
+                <input type="text" id="address" placeholder="Nhập nơi ở" required>
+            </div>
+            <div class="form-group">
+                <label>Ca làm việc:</label>
+                <div class="checkbox-group">
+                    <div><input type="checkbox" name="shift" value="Ca 1"><label>Ca 1 (06h30 - 13h30)</label></div>
+                    <div><input type="checkbox" name="shift" value="Ca 2"><label>Ca 2 (12h30 - 18h30)</label></div>
+                    <div><input type="checkbox" name="shift" value="Ca 3"><label>Ca 3 (16h30 - 23h00)</label></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="workplace">Đã làm ở:</label>
+                <select id="workplace" required>
+                    <option value="">Chọn...</option>
+                    <option value="Shopee Food">Shopee Food</option>
+                    <option value="Grab Food">Grab Food</option>
+                    <option value="Khác">Khác</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-submit">Đăng Ký</button>
         </form>
     </div>
-
     <script>
-        document.getElementById("dalam").addEventListener("change", function() {
-            var khacField = document.getElementById("khac");
-            if (this.value === "Khác") {
-                khacField.style.display = "block";
-                khacField.setAttribute("required", "true");
-            } else {
-                khacField.style.display = "none";
-                khacField.removeAttribute("required");
-            }
-        });
-
-        document.getElementById("dangkyForm").addEventListener("submit", function(event) {
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
             event.preventDefault();
-            let formData = new FormData(this);
-            let object = {};
-            formData.forEach((value, key) => {
-                if (object[key]) {
-                    object[key] += ", " + value;
-                } else {
-                    object[key] = value;
-                }
-            });
-            
-            if (object["dalam"] === "Khác" && !object["khac"]) {
-                alert("Vui lòng nhập nơi đã làm nếu chọn 'Khác'.");
+            let workplace = document.getElementById("workplace").value;
+            if (workplace === "") {
+                alert("Vui lòng chọn nơi đã làm!");
                 return;
             }
-            
-            fetch("https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec", {
-                method: "POST",
-                mode: "no-cors",
-                body: new URLSearchParams(object)
-            }).then(() => {
-                alert("Bạn đã đăng ký thành công!\n\nQuản lý sẽ liên hệ bạn trong thời gian sớm nhất. Xin cảm ơn!");
-                document.getElementById("dangkyForm").reset();
-                document.getElementById("khac").style.display = "none";
-            }).catch(error => console.log(error));
+            alert("Đăng ký thành công!");
         });
     </script>
 </body>

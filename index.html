@@ -30,7 +30,7 @@
             align-items: center;
             justify-content: space-between;
             margin-top: 10px;
-            text-align: right;  /* Căn lề phải */
+            text-align: left;  /* Căn lề trái */
         }
         label {
             font-size: 14px;
@@ -45,7 +45,7 @@
             font-size: 14px;
         }
         .checkbox-group {
-            margin-top: 0;
+            margin-left: 2cm;  /* Dời checkbox-group sang phải 2cm */
         }
         .checkbox-group div {
             display: flex;
@@ -99,35 +99,4 @@
                 <input type="text" id="address" placeholder="Nhập nơi ở" required>
             </div>
             <div class="form-group">
-                <label>Ca làm việc:</label>
-                <div class="checkbox-group">
-                    <div><input type="checkbox" name="shift" value="Ca 1"><label>Ca 1 (06h30 - 13h30)</label></div>
-                    <div><input type="checkbox" name="shift" value="Ca 2"><label>Ca 2 (12h30 - 18h30)</label></div>
-                    <div><input type="checkbox" name="shift" value="Ca 3"><label>Ca 3 (16h30 - 23h00)</label></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="workplace">Đã làm ở:</label>
-                <select id="workplace" required>
-                    <option value="">Chọn...</option>
-                    <option value="Shopee Food">Shopee Food</option>
-                    <option value="Grab Food">Grab Food</option>
-                    <option value="Khác">Khác</option>
-                </select>
-            </div>
-            <button type="submit" class="btn-submit">Đăng Ký</button>
-        </form>
-    </div>
-    <script>
-        document.getElementById("registrationForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            let workplace = document.getElementById("workplace").value;
-            if (workplace === "") {
-                alert("Vui lòng chọn nơi đã làm!");
-                return;
-            }
-            alert("Đăng ký thành công!");
-        });
-    </script>
-</body>
-</html>
+       

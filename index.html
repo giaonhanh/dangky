@@ -45,12 +45,11 @@
         }
 
         .checkbox-group {
-            display: flex;
-            flex-direction: column;
             margin: 10px 0;
         }
 
         .checkbox-group label {
+            display: block;
             font-weight: normal;
         }
 
@@ -98,9 +97,9 @@
 
             <div class="checkbox-group">
                 <label>Ca làm việc:</label>
-                <label><input type="checkbox" id="ca1" value="06h30 - 13h30"> Ca 1 (06h30 - 13h30)</label>
-                <label><input type="checkbox" id="ca2" value="12h30 - 18h30"> Ca 2 (12h30 - 18h30)</label>
-                <label><input type="checkbox" id="ca3" value="16h30 - 23h00"> Ca 3 (16h30 - 23h00)</label>
+                <label><input type="checkbox" name="ca1" value="06h30 - 13h30"> Ca 1 (06h30 - 13h30)</label>
+                <label><input type="checkbox" name="ca2" value="12h30 - 18h30"> Ca 2 (12h30 - 18h30)</label>
+                <label><input type="checkbox" name="ca3" value="16h30 - 23h00"> Ca 3 (16h30 - 23h00)</label>
             </div>
 
             <div class="form-group">
@@ -125,7 +124,6 @@
         document.getElementById("registerForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
-            // Lấy dữ liệu từ form
             let hoten = document.getElementById("hoten").value;
             let ngaysinh = document.getElementById("ngaysinh").value;
             let sodienthoai = document.getElementById("sodienthoai").value;
@@ -134,11 +132,10 @@
             let noilamkhac = document.getElementById("noilamkhac").value;
 
             let calamviec = [];
-            if (document.getElementById("ca1").checked) calamviec.push(document.getElementById("ca1").value);
-            if (document.getElementById("ca2").checked) calamviec.push(document.getElementById("ca2").value);
-            if (document.getElementById("ca3").checked) calamviec.push(document.getElementById("ca3").value);
+            document.querySelectorAll("input[type=checkbox]:checked").forEach(cb => {
+                calamviec.push(cb.value);
+            });
 
-            // Kiểm tra dữ liệu hợp lệ
             if (!hoten || !ngaysinh || !sodienthoai || !noio) {
                 alert("Vui lòng điền đầy đủ thông tin!");
                 return;
@@ -149,29 +146,26 @@
                 return;
             }
 
-            // Đóng gói dữ liệu
-            let formData = {
-                hoten,
-                ngaysinh,
-                sodienthoai,
-                noio,
-                calamviec,
-                dalamo,
-                noilamkhac
-            };
+            let formData = new FormData();
+            formData.append("HoTen", hoten);
+            formData.append("NgaySinh", ngaysinh);
+            formData.append("SoDienThoai", sodienthoai);
+            formData.append("NoiO", noio);
+            formData.append("CaLamViec", calamviec[0] || "");
+            formData.append("CaLamViec2", calamviec[1] || "");
+            formData.append("CaLamViec3", calamviec[2] || "");
+            formData.append("DaLamO", dalamo);
+            formData.append("Khac", noilamkhac);
 
-            // Gửi dữ liệu bằng fetch (API giả lập)
-            fetch("https://example.com/api/register", {
+            let scriptURL = "https://script.google.com/macros/s/AKfycbyhtsJRFG87JM17rLD5uVbZx0y2_J-F2vf8VRJTfbjrM8BWKUF8Go_yliArYdV_ktdmjw/exec";
+
+            fetch(scriptURL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
-                alert("Đăng ký thành công!");
-                console.log("Server response:", data);
+                alert(data.message);
             })
             .catch(error => {
                 console.error("Lỗi xử lý:", error);

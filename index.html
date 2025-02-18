@@ -48,14 +48,6 @@
             gap: 5px;
             margin-top: 5px;
         }
-        .checkbox-group div {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .checkbox-group input {
-            margin-left: -30px; /* Dịch checkbox qua trái 3cm */
-        }
         .btn-submit {
             width: 100%;
             background-color: gold;
@@ -127,11 +119,7 @@
     <script>
         document.getElementById('dalam').addEventListener('change', function() {
             var khacContainer = document.getElementById('khacContainer');
-            if (this.value === 'Khác') {
-                khacContainer.style.display = 'block';
-            } else {
-                khacContainer.style.display = 'none';
-            }
+            khacContainer.style.display = this.value === 'Khác' ? 'block' : 'none';
         });
 
         document.getElementById("registrationForm").addEventListener("submit", function(event) {
@@ -147,191 +135,20 @@
             formData.append("CaLamViec3", document.getElementById("ca3").checked ? "X" : "");
 
             let dalam = document.getElementById("dalam").value;
-            formData.append("DaLamO", dalam);  // Ghi vào cột DaLamO
-            if (dalam === "Khác") {
-                formData.append("Khac", document.getElementById("vieckhac").value);
-            } else {
-                formData.append("Khac", "");  // Nếu không chọn "Khác", không ghi gì vào cột Khac
-            }
-
-            fetch("https://script.google.com/macros/s/<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký Tài Xế</title>
-    <style>
-        body {
-            background-color: yellow;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff8c6;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            width: 400px;
-        }
-        h2 {
-            text-align: center;
-            font-weight: bold;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-        }
-        label {
-            font-size: 14px;
-            font-weight: normal;
-            margin-bottom: 5px;
-        }
-        input, select {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 5px;
-        }
-        .checkbox-group div {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .checkbox-group input {
-            margin-left: -30px; /* Dịch checkbox qua trái 3cm */
-        }
-        .btn-submit {
-            width: 100%;
-            background-color: gold;
-            border: none;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        .success-message {
-            color: green;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-        }
-        #khacContainer {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>ĐĂNG KÝ TÀI XẾ GIAO NHANH</h2>
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="hoten">Họ & Tên:</label>
-                <input type="text" id="hoten" required>
-            </div>
-            <div class="form-group">
-                <label for="ngaysinh">Ngày sinh:</label>
-                <input type="date" id="ngaysinh" required>
-            </div>
-            <div class="form-group">
-                <label for="sodienthoai">SĐT:</label>
-                <input type="text" id="sodienthoai" required>
-            </div>
-            <div class="form-group">
-                <label for="noio">Nơi ở:</label>
-                <input type="text" id="noio" required>
-            </div>
-            <div class="form-group">
-                <label>Ca làm việc:</label>
-                <div class="checkbox-group">
-                    <div><input type="checkbox" id="ca1"><label for="ca1">Ca 1 (06h30 - 13h30)</label></div>
-                    <div><input type="checkbox" id="ca2"><label for="ca2">Ca 2 (12h30 - 18h30)</label></div>
-                    <div><input type="checkbox" id="ca3"><label for="ca3">Ca 3 (16h30 - 23h00)</label></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="dalam">Đã làm ở:</label>
-                <select id="dalam" required>
-                    <option value="">Chọn...</option>
-                    <option value="Shopee Food">Shopee Food</option>
-                    <option value="Grab Food">Grab Food</option>
-                    <option value="Khác">Khác</option>
-                </select>
-            </div>
-            <div class="form-group" id="khacContainer">
-                <label for="vieckhac">Nhập nơi làm khác:</label>
-                <input type="text" id="vieckhac" placeholder="Nhập thông tin khác">
-            </div>
-            <button type="submit" class="btn-submit">Đăng Ký</button>
-        </form>
-        <div id="successMessage" class="success-message">Bạn đã đăng ký thành công!</div>
-    </div>
-
-    <script>
-        document.getElementById('dalam').addEventListener('change', function() {
-            var khacContainer = document.getElementById('khacContainer');
-            if (this.value === 'Khác') {
-                khacContainer.style.display = 'block';
-            } else {
-                khacContainer.style.display = 'none';
-            }
-        });
-
-        document.getElementById("registrationForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            let formData = new FormData();
-            formData.append("HoTen", document.getElementById("hoten").value);
-            formData.append("NgaySinh", document.getElementById("ngaysinh").value);
-            formData.append("SoDienThoai", document.getElementById("sodienthoai").value);
-            formData.append("NoiO", document.getElementById("noio").value);
-            formData.append("CaLamViec", document.getElementById("ca1").checked ? "X" : "");
-            formData.append("CaLamViec2", document.getElementById("ca2").checked ? "X" : "");
-            formData.append("CaLamViec3", document.getElementById("ca3").checked ? "X" : "");
-
-            let dalam = document.getElementById("dalam").value;
-            formData.append("DaLamO", dalam);  // Ghi vào cột DaLamO
-            if (dalam === "Khác") {
-                formData.append("Khac", document.getElementById("vieckhac").value);
-            } else {
-                formData.append("Khac", "");  // Nếu không chọn "Khác", không ghi gì vào cột Khac
-            }
+            formData.append("DaLamO", dalam);
+            formData.append("Khac", dalam === "Khác" ? document.getElementById("vieckhac").value : "");
 
             fetch("https://script.google.com/macros/s/AKfycbzTAXXQYNhYzjpVdPWxJBcbJdLKV0WhzZx2SBcfY3myY8y3AeZYm5IS1IZW3EpSvB0/exec", {
                 method: "POST",
-                body: formData,
-                mode: "no-cors"
+                body: formData
             })
-            .then(() => {
-                document.getElementById("successMessage").style.display = "block";
-            })
-            .catch(error => {
-                alert("Đã có lỗi xảy ra! Vui lòng thử lại.");
-            });
-        });
-    </script>
-</body>
-</html>
-/exec", {
-                method: "POST",
-                body: formData,
-                mode: "no-cors"
-            })
-            .then(() => {
-                document.getElementById("successMessage").style.display = "block";
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Đăng ký thành công!") {
+                    document.getElementById("successMessage").style.display = "block";
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
             })
             .catch(error => {
                 alert("Đã có lỗi xảy ra! Vui lòng thử lại.");

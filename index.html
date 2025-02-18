@@ -52,19 +52,15 @@
         .checkbox-group div {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
             gap: 10px;
         }
         .checkbox-group input {
             margin: 0;
-            width: 16px;
-            height: 16px;
         }
         .checkbox-group label {
             font-size: 14px;
             font-weight: normal;
-            flex-grow: 1;
-            white-space: nowrap;
+            width: auto;
         }
         .btn-submit {
             width: 100%;
@@ -77,102 +73,78 @@
             cursor: pointer;
             margin-top: 15px;
         }
-        .error-message {
-            color: red;
-            font-size: 12px;
-            text-align: center;
-            display: none;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>ĐĂNG KÝ TÀI XẾ GIAO NHANH</h2>
-        <form id="registrationForm" action="https://script.google.com/macros/s/AKfycbzJGIPaISx8Cdc4e_VimKnT_93HzWq-iGBdAj7TCLVPY8o5NWLdAsjBhy_7rXguHHcA9A/exec" method="POST">
+        <form id="registrationForm">
             <div class="form-group">
-                <label for="hoten">Họ & Tên:</label>
-                <input type="text" id="hoten" name="hoten" placeholder="Nhập họ & tên" required>
+                <label for="name">Họ & Tên:</label>
+                <input type="text" id="name" placeholder="Nhập họ & tên" required>
             </div>
             <div class="form-group">
-                <label for="ngaysinh">Ngày sinh:</label>
-                <input type="date" id="ngaysinh" name="ngaysinh" required>
+                <label for="dob">Ngày sinh:</label>
+                <input type="date" id="dob" required>
             </div>
             <div class="form-group">
-                <label for="sodienthoai">SĐT:</label>
-                <input type="text" id="sodienthoai" name="sodienthoai" placeholder="Nhập số điện thoại" required>
-                <div id="phoneError" class="error-message">Sai số điện thoại. Vui lòng nhập lại.</div>
+                <label for="phone">SĐT:</label>
+                <input type="text" id="phone" placeholder="Nhập số điện thoại" required>
             </div>
             <div class="form-group">
-                <label for="noio">Nơi ở:</label>
-                <input type="text" id="noio" name="noio" placeholder="Nhập nơi ở" required>
+                <label for="address">Nơi ở:</label>
+                <input type="text" id="address" placeholder="Nhập nơi ở" required>
             </div>
             <div class="form-group">
                 <label>Ca làm việc:</label>
                 <div class="checkbox-group">
-                    <div><input type="checkbox" name="calamviec" value="Ca 1"> Ca 1 (06h30 - 13h30)</div>
-                    <div><input type="checkbox" name="calamviec1" value="Ca 2"> Ca 2 (12h30 - 18h30)</div>
-                    <div><input type="checkbox" name="calamviec2" value="Ca 3"> Ca 3 (16h30 - 23h00)</div>
+                    <div><input type="checkbox" id="ca1"><label for="ca1">Ca 1 (06h30 - 13h30)</label></div>
+                    <div><input type="checkbox" id="ca2"><label for="ca2">Ca 2 (12h30 - 18h30)</label></div>
+                    <div><input type="checkbox" id="ca3"><label for="ca3">Ca 3 (16h30 - 23h00)</label></div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="dalam">Đã làm ở:</label>
-                <select id="dalam" name="dalam" required>
+                <label for="workplace">Đã làm ở:</label>
+                <select id="workplace" required>
                     <option value="">Chọn...</option>
                     <option value="Shopee Food">Shopee Food</option>
                     <option value="Grab Food">Grab Food</option>
                     <option value="Khác">Khác</option>
                 </select>
             </div>
-            <div class="form-group" id="khacContainer" style="display:none;">
-                <label for="vieckhac">Thông tin khác:</label>
-                <input type="text" id="vieckhac" name="vieckhac" placeholder="Vui lòng nhập thông tin khác">
-            </div>
             <button type="submit" class="btn-submit">Đăng Ký</button>
         </form>
-        <div id="successMessage" class="error-message" style="color:green;">Bạn đã đăng ký thành công.<br>Quản lý của Giao Nhanh sẽ liên hệ lại bạn trong thời gian sớm nhất.</div>
     </div>
-
     <script>
-        document.getElementById('dalam').addEventListener('change', function() {
-            var selectedValue = this.value;
-            var khacContainer = document.getElementById('khacContainer');
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault();
             
-            // Hiển thị trường "Thông tin khác" nếu chọn "Khác"
-            if (selectedValue === 'Khác') {
-                khacContainer.style.display = 'block';
-            } else {
-                khacContainer.style.display = 'none';
-            }
-        });
+            let name = document.getElementById("name").value;
+            let dob = document.getElementById("dob").value;
+            let phone = document.getElementById("phone").value;
+            let address = document.getElementById("address").value;
+            let ca1 = document.getElementById("ca1").checked ? "X" : "";
+            let ca2 = document.getElementById("ca2").checked ? "X" : "";
+            let ca3 = document.getElementById("ca3").checked ? "X" : "";
+            let workplace = document.getElementById("workplace").value;
+            let lamO = workplace === "Khác" ? "" : workplace;
+            let khac = workplace === "Khác" ? "X" : "";
 
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            // Kiểm tra các trường bắt buộc
-            var hoten = document.getElementById('hoten').value;
-            var ngaysinh = document.getElementById('ngaysinh').value;
-            var sodienthoai = document.getElementById('sodienthoai').value;
-            var noio = document.getElementById('noio').value;
-            var dalam = document.getElementById('dalam').value;
-            var calamviec = document.querySelector('input[name="calamviec"]:checked') ||
-                            document.querySelector('input[name="calamviec1"]:checked') ||
-                            document.querySelector('input[name="calamviec2"]:checked');
-            
-            if (!hoten || !ngaysinh || !sodienthoai || !noio || !dalam || !calamviec) {
-                alert("Vui lòng nhập đầy đủ thông tin.");
-                event.preventDefault(); // Ngừng gửi form
-                return;
-            }
+            let data = { HoTen: name, NgaySinh: dob, SoDienThoai: phone, NoiO: address, CaLamViec: ca1, CaLamViec2: ca2, CaLamViec3: ca3, LamO: lamO, Khac: khac };
 
-            // Kiểm tra số điện thoại
-            if (sodienthoai.length !== 10 || isNaN(sodienthoai)) {
-                document.getElementById('phoneError').style.display = 'block';
-                event.preventDefault(); // Ngừng gửi form
-                return;
-            } else {
-                document.getElementById('phoneError').style.display = 'none';
-            }
-
-            // Hiển thị thông báo thành công sau khi gửi form
-            document.getElementById('successMessage').style.display = 'block';
+            fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Đã có lỗi xảy ra!");
+            });
         });
     </script>
 </body>

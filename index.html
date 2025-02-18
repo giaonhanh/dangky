@@ -55,12 +55,13 @@
             gap: 10px;
         }
         .checkbox-group input {
-            margin: 0;
+            margin-left: -30px; /* Di chuyển checkbox qua trái 3cm */
         }
         .checkbox-group label {
             font-size: 14px;
             font-weight: normal;
             width: auto;
+            margin-left: -30px;
         }
         .btn-submit {
             width: 100%;
@@ -132,7 +133,7 @@
 
             let data = { HoTen: name, NgaySinh: dob, SoDienThoai: phone, NoiO: address, CaLamViec: ca1, CaLamViec2: ca2, CaLamViec3: ca3, LamO: lamO, Khac: khac };
 
-            fetch("https://script.google.com/macros/s/AKfycbxKBTcDRDfotsSXG4QHA_rHYxGC2Co6lejxJqDXF9NTG7Ztq0tlzr5ZqfoXKZF1FnKSSQ/exec", {
+            fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: { "Content-Type": "application/json" }

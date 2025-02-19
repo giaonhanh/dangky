@@ -19,34 +19,34 @@
             box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
             text-align: left;
         }
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
         label {
-            font-weight: bold;
-            width: 150px;
-            text-align: left;
+            font-size: 14px; /* Font nhỏ lại */
+            font-weight: normal; /* Không in đậm */
+            width: 120px;
+            display: inline-block;
         }
         input, select {
             width: 60%;
             padding: 5px;
+            margin: 5px 0;
+        }
+        .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
         .checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 60%;
-    text-align: left; /* Canh nội dung về trái */
-    margin-left: 10px; /* Tạo khoảng cách để thẳng hàng */
-}
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 60%;
+            margin-left: 10px;
         }
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
+            font-size: 14px;
         }
         .btn {
             background: #ffcc00;
@@ -61,8 +61,8 @@
         .btn:hover {
             background: #ff9900;
         }
-        #KhacRow {
-            display: none;
+        #khacInput {
+            display: none; /* Ẩn ô nhập nếu không chọn "Khác" */
         }
     </style>
 </head>
@@ -90,35 +90,35 @@
             <label>Nơi ở:</label>
             <input type="text" id="NoiO">
         </div>
-
+        
         <div class="row">
             <label>Ca làm việc:</label>
             <div class="checkbox-group">
                 <div class="checkbox-item">
                     <input type="checkbox" id="CaLamViec1">
-                    <label for="CaLamViec1">Ca 1 (06h30 - 13h30)</label>
+                    <span>Ca 1 (06h30 - 13h30)</span>
                 </div>
                 <div class="checkbox-item">
                     <input type="checkbox" id="CaLamViec2">
-                    <label for="CaLamViec2">Ca 2 (12h30 - 18h30)</label>
+                    <span>Ca 2 (12h30 - 18h30)</span>
                 </div>
                 <div class="checkbox-item">
                     <input type="checkbox" id="CaLamViec3">
-                    <label for="CaLamViec3">Ca 3 (16h30 - 23h00)</label>
+                    <span>Ca 3 (16h30 - 23h00)</span>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <label>Đã làm ở:</label>
-            <select id="DaLamO" onchange="toggleKhac()">
+            <select id="DaLamO" onchange="hienThiKhac()">
                 <option value="Shopee Food">Shopee Food</option>
                 <option value="Grab Food">Grab Food</option>
                 <option value="Khác">Khác</option>
             </select>
         </div>
         
-        <div class="row" id="KhacRow">
+        <div class="row" id="khacInput">
             <label>Nhập nơi làm khác:</label>
             <input type="text" id="Khac">
         </div>
@@ -127,39 +127,33 @@
     </div>
 
     <script>
-        function toggleKhac() {
-            let selectValue = document.getElementById("DaLamO").value;
-            let khacRow = document.getElementById("KhacRow");
-            if (selectValue === "Khác") {
-                khacRow.style.display = "flex";
+        function hienThiKhac() {
+            let daLamO = document.getElementById("DaLamO").value;
+            let khacInput = document.getElementById("khacInput");
+
+            if (daLamO === "Khác") {
+                khacInput.style.display = "flex";
             } else {
-                khacRow.style.display = "none";
+                khacInput.style.display = "none";
             }
         }
 
         function dangKy() {
             let scriptURL = "https://script.google.com/macros/s/AKfycbyhtsJRFG87JM17rLD5uVbZx0y2_J-F2vf8VRJTfbjrM8BWKUF8Go_yliArYdV_ktdmjw/exec";
-            let formData = new URLSearchParams();
+            let formData = new FormData();
 
-            formData.append("HoTen", document.getElementById("HoTen").value.trim());
-            formData.append("NgaySinh", document.getElementById("NgaySinh").value.trim());
-            formData.append("SoDienThoai", document.getElementById("SoDienThoai").value.trim());
-            formData.append("NoiO", document.getElementById("NoiO").value.trim());
+            formData.append("HoTen", document.getElementById("HoTen").value);
+            formData.append("NgaySinh", document.getElementById("NgaySinh").value);
+            formData.append("SoDienThoai", document.getElementById("SoDienThoai").value);
+            formData.append("NoiO", document.getElementById("NoiO").value);
             formData.append("CaLamViec1", document.getElementById("CaLamViec1").checked ? "Có" : "Không");
             formData.append("CaLamViec2", document.getElementById("CaLamViec2").checked ? "Có" : "Không");
             formData.append("CaLamViec3", document.getElementById("CaLamViec3").checked ? "Có" : "Không");
             formData.append("DaLamO", document.getElementById("DaLamO").value);
-            
-            let khacRow = document.getElementById("KhacRow");
-            if (khacRow.style.display === "flex") {
-                formData.append("Khac", document.getElementById("Khac").value.trim());
-            } else {
-                formData.append("Khac", "");
-            }
+            formData.append("Khac", document.getElementById("Khac").value);
 
             fetch(scriptURL, {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: formData
             })
             .then(response => response.json())

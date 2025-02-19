@@ -18,22 +18,30 @@
             border-radius: 10px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
         }
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
         label {
             font-weight: bold;
-            width: 120px;
-            display: inline-block;
+            width: 150px; /* Điều chỉnh label dài hơn */
             text-align: left;
         }
         input, select {
             width: 60%;
             padding: 5px;
-            margin: 5px 0;
         }
-        .row {
+        .checkbox-row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .checkbox-row label {
+            width: auto; /* Để label không bị cố định width */
+            margin-right: 10px;
         }
         .btn {
             background: #ffcc00;
@@ -76,16 +84,16 @@
         </div>
         
         <label>Ca làm việc:</label>
-        <div class="row">
-            <label>Ca 1 (06h30 - 13h30)</label>
+        <div class="checkbox-row">
+            <label for="CaLamViec1">Ca 1 (06h30 - 13h30)</label>
             <input type="checkbox" id="CaLamViec1">
         </div>
-        <div class="row">
-            <label>Ca 2 (12h30 - 18h30)</label>
+        <div class="checkbox-row">
+            <label for="CaLamViec2">Ca 2 (12h30 - 18h30)</label>
             <input type="checkbox" id="CaLamViec2">
         </div>
-        <div class="row">
-            <label>Ca 3 (16h30 - 23h00)</label>
+        <div class="checkbox-row">
+            <label for="CaLamViec3">Ca 3 (16h30 - 23h00)</label>
             <input type="checkbox" id="CaLamViec3">
         </div>
 
@@ -110,20 +118,21 @@
     <script>
         function dangKy() {
             let scriptURL = "https://script.google.com/macros/s/AKfycbyhtsJRFG87JM17rLD5uVbZx0y2_J-F2vf8VRJTfbjrM8BWKUF8Go_yliArYdV_ktdmjw/exec";
-            let formData = new FormData();
+            let formData = new URLSearchParams(); // Sử dụng URLSearchParams để gửi dữ liệu chính xác hơn
 
-            formData.append("HoTen", document.getElementById("HoTen").value);
-            formData.append("NgaySinh", document.getElementById("NgaySinh").value);
-            formData.append("SoDienThoai", document.getElementById("SoDienThoai").value);
-            formData.append("NoiO", document.getElementById("NoiO").value);
+            formData.append("HoTen", document.getElementById("HoTen").value.trim());
+            formData.append("NgaySinh", document.getElementById("NgaySinh").value.trim());
+            formData.append("SoDienThoai", document.getElementById("SoDienThoai").value.trim());
+            formData.append("NoiO", document.getElementById("NoiO").value.trim());
             formData.append("CaLamViec1", document.getElementById("CaLamViec1").checked ? "Có" : "Không");
             formData.append("CaLamViec2", document.getElementById("CaLamViec2").checked ? "Có" : "Không");
             formData.append("CaLamViec3", document.getElementById("CaLamViec3").checked ? "Có" : "Không");
             formData.append("DaLamO", document.getElementById("DaLamO").value);
-            formData.append("Khac", document.getElementById("Khac").value);
+            formData.append("Khac", document.getElementById("Khac").value.trim());
 
             fetch(scriptURL, {
                 method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Fix lỗi gửi dữ liệu
                 body: formData
             })
             .then(response => response.json())

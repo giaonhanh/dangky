@@ -139,7 +139,7 @@
         }
 
         function dangKy() {
-    let scriptURL = "https://script.google.com/macros/s/AKfycbwHdlmsa68SOC9LzM2BrwGDm6PmACjOlhUe-ZHVfqX_qpqRAih-BPMpcDwFjC3bc8_oww/exec";  // 🔄 Thay bằng URL Web App thực tế
+    let scriptURL = "https://script.google.com/macros/s/AKfycbwHdlmsa68SOC9LzM2BrwGDm6PmACjOlhUe-ZHVfqX_qpqRAih-BPMpcDwFjC3bc8_oww/exec";  
 
     let formData = {
         HoTen: document.getElementById("HoTen").value,
@@ -150,23 +150,27 @@
         CaLamViec2: document.getElementById("CaLamViec2").checked ? "Có" : "Không",
         CaLamViec3: document.getElementById("CaLamViec3").checked ? "Có" : "Không",
         DaLamO: document.getElementById("DaLamO").value,
-        Khac: document.getElementById("Khac").value
+        Khac: document.getElementById("DaLamO").value === "Khác" ? document.getElementById("Khac").value : ""
     };
+
+    console.log("Dữ liệu gửi đi:", formData); // 🛠 Kiểm tra dữ liệu trước khi gửi
 
     fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify(formData), // 🔄 Gửi dữ liệu JSON thay vì FormData
-        headers: { "Content-Type": "application/json" } // 🔄 Định dạng JSON
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" }
     })
     .then(response => response.json())
     .then(data => {
+        console.log("Phản hồi từ server:", data); // 🛠 Kiểm tra phản hồi từ server
         alert(data.message);
     })
     .catch(error => {
-        console.error("Lỗi:", error);
+        console.error("Lỗi khi gửi dữ liệu:", error);
         alert("Lỗi khi gửi dữ liệu!");
     });
 }
+
     </script>
 
 </body>

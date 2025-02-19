@@ -139,32 +139,34 @@
         }
 
         function dangKy() {
-            let scriptURL = "https://script.google.com/macros/s/AKfycbyhtsJRFG87JM17rLD5uVbZx0y2_J-F2vf8VRJTfbjrM8BWKUF8Go_yliArYdV_ktdmjw/exec";
-            let formData = new FormData();
+    let scriptURL = "https://script.google.com/macros/s/AKfycbwHdlmsa68SOC9LzM2BrwGDm6PmACjOlhUe-ZHVfqX_qpqRAih-BPMpcDwFjC3bc8_oww/exec";  // 🔄 Thay bằng URL Web App thực tế
 
-            formData.append("HoTen", document.getElementById("HoTen").value);
-            formData.append("NgaySinh", document.getElementById("NgaySinh").value);
-            formData.append("SoDienThoai", document.getElementById("SoDienThoai").value);
-            formData.append("NoiO", document.getElementById("NoiO").value);
-            formData.append("CaLamViec1", document.getElementById("CaLamViec1").checked ? "Có" : "Không");
-            formData.append("CaLamViec2", document.getElementById("CaLamViec2").checked ? "Có" : "Không");
-            formData.append("CaLamViec3", document.getElementById("CaLamViec3").checked ? "Có" : "Không");
-            formData.append("DaLamO", document.getElementById("DaLamO").value);
-            formData.append("Khac", document.getElementById("Khac").value);
+    let formData = {
+        HoTen: document.getElementById("HoTen").value,
+        NgaySinh: document.getElementById("NgaySinh").value,
+        SoDienThoai: document.getElementById("SoDienThoai").value,
+        NoiO: document.getElementById("NoiO").value,
+        CaLamViec1: document.getElementById("CaLamViec1").checked ? "Có" : "Không",
+        CaLamViec2: document.getElementById("CaLamViec2").checked ? "Có" : "Không",
+        CaLamViec3: document.getElementById("CaLamViec3").checked ? "Có" : "Không",
+        DaLamO: document.getElementById("DaLamO").value,
+        Khac: document.getElementById("Khac").value
+    };
 
-            fetch(scriptURL, {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch(error => {
-                console.error("Lỗi:", error);
-                alert("Lỗi khi gửi dữ liệu!");
-            });
-        }
+    fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(formData), // 🔄 Gửi dữ liệu JSON thay vì FormData
+        headers: { "Content-Type": "application/json" } // 🔄 Định dạng JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error("Lỗi:", error);
+        alert("Lỗi khi gửi dữ liệu!");
+    });
+}
     </script>
 
 </body>
